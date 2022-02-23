@@ -1,6 +1,7 @@
 # Lateify
 
-A program that processes autograder output for ENGR-E111.
+A program that processes autograder output for ENGR-E111 and
+penalizes late submissions by 10 points per day.
 
 ```
 usage: lateify [-h] --due DUE [--dir DIR] files [files ...]
