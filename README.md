@@ -2,7 +2,7 @@
 
 A program that processes autograder output for ENGR-E111.
 
-```python
+```
 usage: lateify [-h] --due DUE [--dir DIR] files [files ...]
 
 Late penalizer for ENGR-E111 at IU.
