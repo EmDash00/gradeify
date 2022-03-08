@@ -22,6 +22,7 @@ def main(filenames, due, outdir):
                     orig.seek(0)
                     reader = csv.DictReader(orig)
                     writer = csv.DictWriter(lateified, fieldnames=header)
+                    writer.writeheader()
 
                     for row in reader:
                         date = datetime.strptime(
