@@ -1,12 +1,13 @@
-# Lateify
+# Gradeify 
 
-A program that processes autograder output for ENGR-E111 and
-penalizes late submissions by 10 points per day.
+A program that processes autograder output for ENGR-E111,
+penalizes late submissions by 10 points per day, and takes the 
+submission with the most amount of points overall after late penalty.
 
 ```
-usage: lateify [-h] --due DUE [--dir DIR] files [files ...]
+usage: gradeify.py [-h] --due DUE [--dir DIR] files [files ...]
 
-Late penalizer for ENGR-E111 at IU.
+Autograder processer and late penalizer for ENGR-E111 at IU.
 
 positional arguments:
   files              files to process

@@ -2,9 +2,10 @@
 
 import csv
 import os
-from os import path
+from typing import cast, Dict, Mapping, Any
 from argparse import ArgumentParser
 from datetime import datetime
+from os import path
 
 
 def main(filenames, due, outdir):
@@ -12,32 +13,58 @@ def main(filenames, due, outdir):
         os.makedirs(outdir)
     for fname in filenames:
         try:
+            header = None
+            grade_dct: Dict[str, Dict[str, str]] = {}
+
             with open(fname, 'r', encoding='utf-8') as orig:
-                with open(
-                    path.join(outdir, f"LATEIFIED-{fname}"),
-                    'w',
-                    encoding='utf-8'
-                ) as lateified:
-                    header = next(csv.reader(orig))
-                    orig.seek(0)
-                    reader = csv.DictReader(orig)
-                    writer = csv.DictWriter(lateified, fieldnames=header)
-                    writer.writeheader()
+                header = next(csv.reader(orig))
+                orig.seek(0)
+                reader = csv.DictReader(orig)
 
-                    for row in reader:
-                        date = datetime.strptime(
-                            row['Timestamp'],
-                            "%Y-%m-%d %H:%M:%S.%f%z"
-                        )
+                for row in reader:
+                    date = datetime.strptime(
+                        row['Timestamp'],
+                        "%Y-%m-%dT%H:%M:%S.%f%z"
+                    )
 
+                    uname = row['Username 1']
+
+                    if uname not in grade_dct:
                         if date > due:
                             days_late = date.day - due.day + 1
-
-                            row['Total Points'] = str(
-                                int(row['Total Points']) - (10 * days_late)
+                            points = max(
+                                0,
+                                int(row['Total']) - (10 * days_late)
                             )
 
-                        writer.writerow(row)
+                            row['Total'] = str(points)
+
+                        grade_dct[uname] = row
+                    else:
+                        if date > due:
+                            days_late = date.day - due.day + 1
+                            points = max(
+                                0,
+                                int(row['Total']) - (10 * days_late)
+                            )
+
+                            if points > int(grade_dct[uname]['Total']):
+                                row['Total'] = str(
+                                    int(row['Total']) - (10 * days_late)
+                                )
+
+                                row['Total'] = str(points)
+                                grade_dct[uname] = row
+
+            with open(
+                path.join(outdir, f"GRADED-{fname}"),
+                'w',
+                encoding='utf-8'
+            ) as graded:
+                writer = csv.DictWriter(graded, fieldnames=header)
+                writer.writeheader()
+                for row in grade_dct.values():
+                    writer.writerow(row)
 
         except FileNotFoundError:
             print(f"{fname} not found. skipping...")
