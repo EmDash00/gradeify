@@ -31,7 +31,7 @@ def main(filenames, due, outdir):
                         )
 
                         if date > due:
-                            days_late = due.day - date.day + 1
+                            days_late = date.day - due.day + 1
 
                             row['Total Points'] = str(
                                 int(row['Total Points']) - (10 * days_late)
