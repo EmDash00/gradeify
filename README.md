@@ -17,3 +17,9 @@ optional arguments:
   --due DUE, -u DUE  Due date in in Year-Month-Day. E.g. 2022-02-22
   --dir DIR, -d DIR  Output directory
 ```
+
+Example Usage:
+
+```
+./gradeify.py Exercise\ 3\ Program\ IO\ Continued_all_scores.csv --due="2022-02-20"
+```

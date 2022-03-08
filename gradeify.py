@@ -2,7 +2,7 @@
 
 import csv
 import os
-from typing import cast, Dict, Mapping, Any
+from typing import Dict
 from argparse import ArgumentParser
 from datetime import datetime
 from os import path
